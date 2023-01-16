@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
+  api vendor_string: 'grocery-api', default_version: 1 do
+    version 1 do
+      cache as: 'v1' do
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+      end
+    end
+  end
 end
