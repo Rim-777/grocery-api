@@ -68,6 +68,9 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
+    annotate (3.2.0)
+      activerecord (>= 3.2, < 8.0)
+      rake (>= 10.4, < 14.0)
     api-versions (1.2.1)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
@@ -277,6 +280,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  annotate
   api-versions (~> 1.2, >= 1.2.1)
   bootsnap
   debug
