@@ -1,0 +1,22 @@
+# PostgreSQL. Versions 9.3 and up are supported.
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see Rails configuration guide
+  # https://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: grocery_api_development
+
+test:
+  <<: *default
+  database: grocery_api_test
+
+production:
+  <<: *default
+  database: grocery_api_production
+  username: grocery_api
+  password: <%= ENV["GROCERY_API_DATABASE_PASSWORD"] %>
