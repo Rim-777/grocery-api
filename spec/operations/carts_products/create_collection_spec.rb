@@ -3,10 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe CartsProducts::CreateCollection do
-  subject { described_class }
-
   def operation
-    subject.call(options)
+    described_class.call(options)
   end
 
   def operation_result
