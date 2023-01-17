@@ -9,7 +9,7 @@ jobs:
       postgres:
         image: postgres:14.5-alpine
         env:
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
         ports: ['5432:5432']
         # needed because the postgres container does not provide a healthcheck
         options: >-
@@ -18,11 +18,12 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup Ruby
-        uses: actions/setup-ruby@v1
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.x
+          ruby-version: '2.7.6'
+          bundler-cache: true
       - name: Install required apt packages
         run: |
           sudo apt-get -y install libpq-dev
@@ -41,5 +42,6 @@ jobs:
           RAILS_ENV: test
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: |
+          
           bundle exec rake db:drop db:create db:schema:load
           bundle exec rspec
