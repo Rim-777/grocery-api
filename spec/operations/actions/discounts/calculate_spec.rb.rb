@@ -3,10 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Actions::Discounts::Calculate do
-  subject { described_class }
-
   def operation
-    subject.call(options)
+    described_class.call(payload)
   end
 
   def operation_result
@@ -15,15 +13,10 @@ RSpec.describe Actions::Discounts::Calculate do
 
   describe '#call' do
     let!(:strawberries) do
-      create(
-        :product,
-        code: 'SR1',
-        name: 'Strawberries',
-        price: Money.new(5.0)
-      )
+      create(:product, code: 'SR1', name: 'Strawberries', price: Money.new(5.0))
     end
 
-    let(:options) do
+    let(:payload) do
       {
         product: strawberries,
         quantity: 3
@@ -32,11 +25,11 @@ RSpec.describe Actions::Discounts::Calculate do
 
     shared_examples :action_is_not_applied do
       it 'does not apply discount' do
-        expect(operation_result.applied).to be(false)
+        expect(operation_result).not_to be_aplied
       end
 
       it 'returns unchanged price' do
-        expect(operation_result.price.to_f).to eq(strawberries.price)
+        expect(operation_result.price).to eq(strawberries.price)
       end
     end
 
@@ -51,17 +44,17 @@ RSpec.describe Actions::Discounts::Calculate do
 
       context 'sufficient quantity for actions' do
         it 'approves discount' do
-          expect(operation_result.applied).to be(true)
+          expect(operation_result).to be_applied
         end
 
         it 'returns an expected bonus price' do
-          expect(operation_result.price.to_f).to eq(4.5)
+          expect(operation_result.price).to eq(Money.new(4.5))
         end
       end
 
       context 'insufficient quantity for actions' do
         before do
-          options[:quantity] = 2
+          payload[:quantity] = 2
         end
 
         include_examples :action_is_not_applied

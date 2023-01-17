@@ -17,8 +17,6 @@ module CartsProducts
       end
 
       @result = CartsProduct.create!(collection)
-    rescue ActiveRecord::RecordInvalid => e
-      interrupt_with_errors!([e.message])
     end
   end
 end

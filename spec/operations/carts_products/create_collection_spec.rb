@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe CartsProducts::CreateCollection do
   def operation
-    described_class.call(options)
+    described_class.call(payload)
   end
 
   def operation_result
@@ -26,11 +26,11 @@ RSpec.describe CartsProducts::CreateCollection do
       {
         product_id: product_id,
         cart_id: cart_id,
-        price: product.price
+        price: price
       }
     end
 
-    let(:options) do
+    let(:payload) do
       {
         attributes: attributes,
         quantity: 3
@@ -67,7 +67,7 @@ RSpec.describe CartsProducts::CreateCollection do
         operation_result.each do |carts_product|
           expect(carts_product)
             .to have_attributes(
-              product_id: product.id,
+              product_id: product_id,
               cart_id: cart_id,
               price: price,
               bonus: false
@@ -81,16 +81,20 @@ RSpec.describe CartsProducts::CreateCollection do
         attributes[:price] = nil
       end
 
-      it 'looks like failure' do
-        expect(operation).to be_failure
-      end
-
       it 'has errors' do
-        expect(operation.errors).to eq(['Validation failed: Price is not a number'])
+        expect { operation }
+          .to raise_error(
+            ActiveRecord::RecordInvalid,
+            'Validation failed: Price is not a number'
+          )
       end
 
       it 'does not create records' do
-        expect { operation }.not_to change(CartsProduct, :count)
+        expect do
+          operation
+        rescue StandardError
+          false
+        end.not_to change(CartsProduct, :count)
       end
     end
   end

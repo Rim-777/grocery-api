@@ -3,10 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Carts::Create do
-  subject { described_class }
-
   def operation
-    subject.call
+    described_class.call
   end
 
   describe '#call' do

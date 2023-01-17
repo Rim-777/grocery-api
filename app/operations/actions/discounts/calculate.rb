@@ -18,23 +18,19 @@ module Actions
       private
 
       def init_result
-        prices = []
+        init_prices = []
 
         @quantity.times do
-          prices << @product.price
+          init_prices << @product.price
         end
 
-        @result = DiscountStruct.new(prices: prices, applied: false)
+        @result = DiscountStruct.new(prices: init_prices, applied: false)
       end
 
       def calculate_discount
         return if discount_not_applicable?
 
-        prices = (
-          (@product.price * @quantity) * action_discount.coefficient
-        ).split(@quantity)
-
-        @result = DiscountStruct.new(prices: prices, applied: true)
+        @result = DiscountStruct.new(prices: final_prices, applied: true)
       end
 
       def action_discount
@@ -52,6 +48,10 @@ module Actions
 
       def discount_not_applicable?
         !discount_applicable?
+      end
+
+      def final_prices
+        (@product.price * @quantity * action_discount.coefficient).split(@quantity)
       end
     end
   end

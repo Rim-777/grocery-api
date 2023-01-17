@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe CartsProducts::DeleteBonusItems do
   def operation
-    described_class.call(options)
+    described_class.call(payload)
   end
 
   describe '#call' do
@@ -42,7 +42,7 @@ RSpec.describe CartsProducts::DeleteBonusItems do
       CartsProduct.where(id: list.map(&:id))
     end
 
-    let(:options) do
+    let(:payload) do
       {
         cart_id: cart_id,
         product_id: product_id

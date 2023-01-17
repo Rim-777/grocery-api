@@ -4,17 +4,12 @@ require 'rails_helper'
 
 RSpec.describe CartsProducts::FindCollection do
   def operation
-    described_class.call(options)
+    described_class.call(payload)
   end
 
   describe '#call' do
     let!(:product) do
-      create(
-        :product,
-        code: 'GR1',
-        name: 'Green Tea',
-        price: Money.new(3.11)
-      )
+      create(:product, code: 'GR1', name: 'Green Tea', price: Money.new(3.11))
     end
 
     let!(:cart_id) { create(:cart).id }
@@ -32,7 +27,7 @@ RSpec.describe CartsProducts::FindCollection do
       CartsProduct.where(id: list.map(&:id))
     end
 
-    let(:options) do
+    let(:payload) do
       {
         attributes: {
           cart_id: cart_id,

@@ -15,7 +15,7 @@ module BaseOperation
 
   %i[
     Interruption
-  ].each { |exception| const_set(exception, Class.new(Exception)) }
+  ].each { |exception| const_set(exception, Class.new(StandardError)) }
 
   attr_reader :errors
 

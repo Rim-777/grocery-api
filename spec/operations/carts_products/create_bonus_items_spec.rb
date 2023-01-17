@@ -4,19 +4,16 @@ require 'rails_helper'
 
 RSpec.describe CartsProducts::CreateBonusItems do
   def operation
-    described_class.call(options)
+    described_class.call(payload)
   end
 
   describe '#call' do
     let!(:cart) { create(:cart) }
 
+    let(:product_price) { Money.new(3.11) }
+
     let!(:product) do
-      create(
-        :product,
-        code: 'GR1',
-        name: 'Green Tea',
-        price: Money.new(3.11)
-      )
+      create(:product, code: 'GR1', name: 'Green Tea', price: product_price)
     end
 
     let!(:carts_products) do
@@ -24,13 +21,13 @@ RSpec.describe CartsProducts::CreateBonusItems do
         :carts_product, 3,
         cart_id: cart.id,
         product_id: product.id,
-        price: product.price
+        price: product_price
       )
 
       CartsProduct.where(id: list.map(&:id))
     end
 
-    let(:options) do
+    let(:payload) do
       { carts_products: carts_products }
     end
 
@@ -38,6 +35,7 @@ RSpec.describe CartsProducts::CreateBonusItems do
       let(:bonus_quantity) { 2 }
       let(:carts_products_count) { carts_products.count }
       let(:expected_bonus_count) { carts_products_count + bonus_quantity }
+
       let(:bonuses_calculate_operation) do
         double(
           result: Actions::Bonuses::Calculate::BonusStruct.new(
@@ -82,7 +80,7 @@ RSpec.describe CartsProducts::CreateBonusItems do
           result: Actions::Bonuses::Calculate::BonusStruct.new(
             applied: false,
             quantity: 0,
-            price: product.price
+            price: product_price
           )
         )
       end

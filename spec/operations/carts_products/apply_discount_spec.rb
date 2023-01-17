@@ -4,19 +4,16 @@ require 'rails_helper'
 
 RSpec.describe CartsProducts::ApplyDiscount do
   def operation
-    described_class.call(options)
+    described_class.call(payload)
   end
 
   describe '#call' do
     let!(:cart) { create(:cart) }
 
+    let(:product_price) { Money.new(5.0) }
+
     let!(:product) do
-      create(
-        :product,
-        code: 'SR1',
-        name: 'Strawberries',
-        price: Money.new(5.0)
-      )
+      create(:product, code: 'SR1', name: 'Strawberries', price: product_price)
     end
 
     let!(:carts_products) do
@@ -24,13 +21,13 @@ RSpec.describe CartsProducts::ApplyDiscount do
         :carts_product, 3,
         cart_id: cart.id,
         product_id: product.id,
-        price: product.price
+        price: product_price
       )
 
       CartsProduct.where(id: list.map(&:id))
     end
 
-    let(:options) do
+    let(:payload) do
       { carts_products: carts_products }
     end
 
@@ -40,8 +37,7 @@ RSpec.describe CartsProducts::ApplyDiscount do
       let(:discount_calculate_operation) do
         double(
           result: Actions::Discounts::Calculate::DiscountStruct.new(
-            applied: true,
-            prices: [reduced_price, reduced_price, reduced_price]
+            applied: true, prices: [reduced_price, reduced_price, reduced_price]
           )
         )
       end
@@ -50,6 +46,7 @@ RSpec.describe CartsProducts::ApplyDiscount do
         allow(Actions::Discounts::Calculate)
           .to receive(:call)
           .and_return(discount_calculate_operation)
+
         operation
       end
 
@@ -62,8 +59,6 @@ RSpec.describe CartsProducts::ApplyDiscount do
 
     context 'discount is not applied' do
       let(:discount_calculate_operation) do
-        product_price = product.price
-
         double(
           result: Actions::Discounts::Calculate::DiscountStruct.new(
             applied: false,
@@ -81,7 +76,7 @@ RSpec.describe CartsProducts::ApplyDiscount do
 
       it 'does not change prices' do
         carts_products.each do |carts_product|
-          expect(carts_product.price).to eq(product.price)
+          expect(carts_product.price).to eq(product_price)
         end
       end
     end

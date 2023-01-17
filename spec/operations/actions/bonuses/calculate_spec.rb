@@ -3,10 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Actions::Bonuses::Calculate do
-  subject { described_class }
-
   def operation
-    subject.call(options)
+    described_class.call(payload)
   end
 
   def operation_result
@@ -15,15 +13,10 @@ RSpec.describe Actions::Bonuses::Calculate do
 
   describe '#call' do
     let!(:green_tea) do
-      create(
-        :product,
-        code: 'GR1',
-        name: 'Green Tea',
-        price: Money.new(3.11)
-      )
+      create(:product, code: 'GR1', name: 'Green Tea', price: Money.new(3.11))
     end
 
-    let(:options) do
+    let(:payload) do
       {
         product: green_tea,
         quantity: 2
@@ -37,8 +30,8 @@ RSpec.describe Actions::Bonuses::Calculate do
         green_tea.actions = [action_bonus]
       end
 
-      it 'approves the bonus' do
-        expect(operation_result.applied).to be(true)
+      it 'applies the bonus' do
+        expect(operation_result).to be_applied
       end
 
       it 'returns an expected bonus quantity' do
@@ -52,7 +45,7 @@ RSpec.describe Actions::Bonuses::Calculate do
 
     context 'action is not present' do
       it 'does not approve the bonus' do
-        expect(operation_result.applied).to be(false)
+        expect(operation_result).not_to be_applied
       end
 
       it 'returns an expected bonus quantity' do

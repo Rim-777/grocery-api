@@ -8,7 +8,7 @@ module CartsProducts
     option :product_id, type: Types::Strict::Integer
 
     def call
-       DeleteCollection.call(attributes: attributes)
+      DeleteCollection.call(attributes: attributes)
     end
 
     private

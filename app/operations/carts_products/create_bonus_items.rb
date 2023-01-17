@@ -5,12 +5,7 @@ module CartsProducts
     prepend BaseOperation
 
     option :carts_products,
-           type: Types.Instance(
-             CartsProduct
-               .const_get(
-                 :ActiveRecord_Relation
-               )
-           )
+           type: Types.Instance(CartsProduct.const_get(:ActiveRecord_Relation))
 
     def call
       set_cart_product_quantity
