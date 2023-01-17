@@ -11,11 +11,12 @@ gem 'dry-struct', '~> 1.6'
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 gem "bootsnap", require: false
 gem 'shopify-money', '~> 1.0.2.pre', require: 'money'
+gem "sentry-ruby"
 gem "rack-cors"
 gem 'jsonapi-serializer', '~> 2.2'
 gem 'rswag'
 gem 'api-versions', '~> 1.2', '>= 1.2.1'
-gem "sentry-ruby"
+gem 'kaminari', '~> 0.17.0'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
