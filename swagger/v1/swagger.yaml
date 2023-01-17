@@ -1,0 +1,280 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/carts":
+    post:
+      summary: creates a cart
+      tags:
+      - Carts
+      responses:
+        '201':
+          description: cart created
+          content:
+            application/json:
+              examples:
+                created cart:
+                  value:
+                    data:
+                      id: '7'
+                      type: cart
+                      attributes:
+                        total:
+                          value: '0.00'
+                          currency: EUR
+                        carts_products:
+                          data: []
+                          included: []
+  "/api/carts/{id}":
+    get:
+      summary: returns a cart
+      tags:
+      - Carts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: cart found
+          content:
+            application/json:
+              examples:
+                cart:
+                  value:
+                    data:
+                      id: '7'
+                      type: cart
+                      attributes:
+                        total:
+                          value: '0.00'
+                          currency: EUR
+                        carts_products:
+                          data: []
+                          included: []
+        '404':
+          description: cart not found
+          content:
+            application/json:
+              examples:
+                error:
+                  value:
+                    errors:
+                    - detail: Couldn't find Cart with 'id'=777
+  "/api/carts/add_product":
+    post:
+      summary: adds product to a cart and returns a cart
+      tags:
+      - Carts
+      parameters: []
+      responses:
+        '201':
+          description: product added
+          content:
+            application/json:
+              examples:
+                cart:
+                  value:
+                    data:
+                      id: '8'
+                      type: cart
+                      attributes:
+                        total:
+                          value: '30.57'
+                          currency: EUR
+                        carts_products:
+                          data:
+                          - id: '21'
+                            type: carts_product
+                            attributes:
+                              price:
+                                value: '3.11'
+                                currency: EUR
+                              bonus: false
+                            relationships:
+                              product:
+                                data:
+                                  id: '1'
+                                  type: product
+                          - id: '22'
+                            type: carts_product
+                            attributes:
+                              price:
+                                value: '0.00'
+                                currency: EUR
+                              bonus: true
+                            relationships:
+                              product:
+                                data:
+                                  id: '1'
+                                  type: product
+                          - id: '23'
+                            type: carts_product
+                            attributes:
+                              price:
+                                value: '5.00'
+                                currency: EUR
+                              bonus: false
+                            relationships:
+                              product:
+                                data:
+                                  id: '2'
+                                  type: product
+                          - id: '24'
+                            type: carts_product
+                            attributes:
+                              price:
+                                value: '7.49'
+                                currency: EUR
+                              bonus: false
+                            relationships:
+                              product:
+                                data:
+                                  id: '3'
+                                  type: product
+                          - id: '25'
+                            type: carts_product
+                            attributes:
+                              price:
+                                value: '7.49'
+                                currency: EUR
+                              bonus: false
+                            relationships:
+                              product:
+                                data:
+                                  id: '3'
+                                  type: product
+                          - id: '26'
+                            type: carts_product
+                            attributes:
+                              price:
+                                value: '7.48'
+                                currency: EUR
+                              bonus: false
+                            relationships:
+                              product:
+                                data:
+                                  id: '3'
+                                  type: product
+                          included:
+                          - id: '1'
+                            type: product
+                            attributes:
+                              name: Green Tea
+                              code: GR1
+                              price:
+                                value: '3.11'
+                                currency: EUR
+                          - id: '2'
+                            type: product
+                            attributes:
+                              name: Strawberries
+                              code: SR1
+                              price:
+                                value: '5.00'
+                                currency: EUR
+                          - id: '3'
+                            type: product
+                            attributes:
+                              name: Coffee
+                              code: CF1
+                              price:
+                                value: '11.23'
+                                currency: EUR
+        '404':
+          description: record not found
+          content:
+            application/json:
+              examples:
+                cart not found:
+                  value:
+                    errors:
+                    - detail: Couldn't find Cart with 'id'=2
+                product not found:
+                  value:
+                    errors:
+                    - detail: Couldn't find Product with 'id'=2
+        '400':
+          description: param is invalid or missing
+          content:
+            application/json:
+              examples:
+                missing_key:
+                  value:
+                    errors:
+                    - detail:
+                        data:
+                          quantity:
+                          - is missing
+                invalid_value:
+                  value:
+                    errors:
+                    - detail:
+                        data:
+                          product_id:
+                          - must be an integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    cart_id:
+                      type: integer
+                    product_id:
+                      type: integer
+                    quantity:
+                      type: integer
+  "/api/products":
+    get:
+      summary: returns list of available products
+      tags:
+      - Products
+      responses:
+        '200':
+          description: list of products
+          content:
+            application/json:
+              examples:
+                product list:
+                  value:
+                    data:
+                    - id: '1'
+                      type: product
+                      attributes:
+                        name: Green Tea
+                        code: GR1
+                        price:
+                          value: '3.11'
+                          currency: EUR
+                    - id: '2'
+                      type: product
+                      attributes:
+                        name: Strawberries
+                        code: SR1
+                        price:
+                          value: '5.00'
+                          currency: EUR
+                    - id: '3'
+                      type: product
+                      attributes:
+                        name: Coffee
+                        code: CF1
+                        price:
+                          value: '11.23'
+                          currency: EUR
+                    links:
+                      first: "/api/products?page=1"
+                      last: "/api/products?page=1"
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000

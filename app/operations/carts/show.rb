@@ -4,7 +4,7 @@ module Carts
   class Show
     prepend BaseOperation
 
-    option :cart_id, type: Types::Strict::Integer
+    option :cart_id, type: Types::NumericString | Types::Strict::Integer
     attr_reader :result
 
     def call

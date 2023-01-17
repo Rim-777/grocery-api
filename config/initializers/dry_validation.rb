@@ -2,4 +2,5 @@
 
 module Types
   include Dry.Types()
+  NumericString = String.constrained(format: /^(\d)+$/)
 end
