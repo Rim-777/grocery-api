@@ -1,24 +1,57 @@
-# README
+## Grocery API
+Ruby-on-Rails [JSON:API](https://jsonapi.org/) application with ActiveRecord, [Dry-rb](https://dry-rb.org/), RSpec, Swagger
+### Dependencies:
+- Ruby 2.7.6
+- PostgreSQL
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Installation:
+- Clone poject
+- Run bundler:
 
-Things you may want to cover:
+ ```shell
+ $ bundle install
+ ```
+- Copy database.yml:
+```shell
+$ cp config/database.yml.sample config/database.yml
+```
 
-* Ruby version
+- Create and migrate database:
 
-* System dependencies
+```shell
+ $ bundle exec rails db:create
+ $ bundle exec rails db:migrate
+```
+- Run application:
 
-* Configuration
+ ```shell
+ $ rails server
+ ```
 
-* Database creation
+##### Tests:
+To execute automation tests, run following commands:
 
-* Database initialization
+```shell
+ $ bundle exec rake db:migrate RAILS_ENV=test #(the first time only)
+ $ bundle exec rspec
+```
 
-* How to run the test suite
+### Explanation of the approach:
+DDD Service-based modular app design with step-based processes. 
+All business logic resides in the abstraction named operations(no business logic in models or controllers)
 
-* Services (job queues, cache servers, search engines, etc.)
+#### Common logic:
+The first edition that allows users to add products to a shopping cart and get bonuses and discounts.
+#####
+Detailed swagger documentation on http://localhost:3000/api-docs
+#####
+For playing around it can be used as a UI, to make it possible and 
+populate some list of products and related actions please run: 
+```shell
+$ bundle exec rails db:seed
+```
 
-* Deployment instructions
 
-* ...
+### License
+
+The software is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
