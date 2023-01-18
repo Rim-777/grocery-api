@@ -274,7 +274,7 @@ paths:
                       first: "/api/products?page=1"
                       last: "/api/products?page=1"
 servers:
-- url: http://{defaultHost}
+- url: https://{defaultHost}
   variables:
     defaultHost:
-      default: localhost:3000
+      default: groceryapi.herokuapp.com
