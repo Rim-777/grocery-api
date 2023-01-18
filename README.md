@@ -43,14 +43,21 @@ All business logic resides in the abstraction named operations(no business logic
 #### Common logic:
 The first edition that allows users to add products to a shopping cart and get bonuses and discounts.
 #####
-Detailed swagger documentation on http://localhost:3000/api-docs
+Detailed swagger documentation on the [localhost](http://localhost:3000/api-docs) and [the deployed version](https://groceryapi.herokuapp.com/api-docs/index.html)
 #####
-For playing around it can be used as a UI, to make it possible and 
-populate some list of products and related actions please run: 
+For playing with the APP around you can use swagger docs UI. 
+#####
+Please note to make it possible on the [localhost](http://localhost:3000/api-docs) you should
+populate some list of products and related actions by running the following command: 
+
 ```shell
 $ bundle exec rails db:seed
 ```
 
+#### Closest tasks to do:
+1) Add users association
+2) Add uses authentication
+3) Add functionality for removing products from shopping carts
 
 ### License
 
